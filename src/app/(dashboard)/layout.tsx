@@ -18,7 +18,7 @@ export default async function DashboardLayout({
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-8 py-4 flex items-center justify-between">
           <h1 className="text-xl font-bold">s3-manager</h1>
           <div className="flex items-center gap-4">
             <span className="text-sm text-muted-foreground">
@@ -27,7 +27,7 @@ export default async function DashboardLayout({
           </div>
         </div>
       </header>
-      <main className="container mx-auto px-4 py-8">{children}</main>
+      <main className="max-w-5xl mx-auto px-8 py-8">{children}</main>
     </div>
   );
 }
