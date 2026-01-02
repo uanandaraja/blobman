@@ -19,7 +19,7 @@ export default async function DashboardLayout({
     <div className="min-h-screen bg-background">
       <header className="border-b">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-xl font-bold">S3 Manager</h1>
+          <h1 className="text-xl font-bold">s3-manager</h1>
           <div className="flex items-center gap-4">
             <span className="text-sm text-muted-foreground">
               {session.user.email}

@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "S3 Manager",
+  title: "s3-manager",
   description: "A simple app to manage S3 and S3-compatible buckets",
 };
 
