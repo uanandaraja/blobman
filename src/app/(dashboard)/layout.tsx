@@ -17,7 +17,7 @@ export default async function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b">
+      <header>
         <div className="max-w-5xl mx-auto px-8 py-4 flex items-center justify-between">
           <h1 className="text-xl font-bold">s3-manager</h1>
           <div className="flex items-center gap-4">
