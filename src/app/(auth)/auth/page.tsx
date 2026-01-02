@@ -7,7 +7,7 @@ export default function LoginPage() {
   const handleGoogleSignIn = () => {
     signIn.social({
       provider: "google",
-      callbackURL: "/",
+      callbackURL: "/app",
     });
   };
 
