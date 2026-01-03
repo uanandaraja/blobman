@@ -1,7 +1,7 @@
+import * as mutations from "./mutations";
+import * as queries from "./queries";
 import * as schema from "./schema";
 import type * as types from "./types";
-import * as queries from "./queries";
-import * as mutations from "./mutations";
 
 export namespace Bucket {
   // Schemas

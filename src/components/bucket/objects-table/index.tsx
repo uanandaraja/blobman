@@ -1,9 +1,15 @@
 "use client";
 
-import { parseAsInteger, useQueryState } from "nuqs";
-import { useRef } from "react";
-import { Button } from "@/components/ui/button";
+import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
+
 import { DataTable } from "@/components/ui/data-table";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { trpc } from "@/lib/trpc";
 import { columns } from "./columns";
 
@@ -12,46 +18,35 @@ interface ObjectsTableProps {
 }
 
 export function ObjectsTable({ bucketId }: ObjectsTableProps) {
-  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
-
-  // Cursor history: index 0 = page 1 cursor (undefined), index 1 = page 2 cursor, etc.
-  const cursorsRef = useRef<Map<number, string | undefined>>(
-    new Map([[1, undefined]]),
+  const [cursor, setCursor] = useQueryState(
+    "cursor",
+    parseAsString.withDefault("").withOptions({ history: "push" })
   );
-
-  // If we don't have a cursor for the current page (e.g., page refresh on page 3),
-  // we need to reset to page 1
-  const hasCursorForPage = cursorsRef.current.has(page);
-  const currentCursor = hasCursorForPage
-    ? cursorsRef.current.get(page)
-    : undefined;
-  const effectivePage = hasCursorForPage ? page : 1;
+  const [page, setPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1).withOptions({ history: "push" })
+  );
 
   const { data, isLoading, isError } = trpc.object.list.useQuery({
     bucketId,
-    cursor: currentCursor,
+    cursor: cursor || undefined,
   });
-
-  // Sync page state if we had to reset
-  if (!hasCursorForPage && page !== 1) {
-    setPage(1);
-  }
 
   const objects = data?.objects ?? [];
   const hasMore = data?.hasMore ?? false;
-  const canGoPrevious = effectivePage > 1;
-  const canGoNext = hasMore;
+  const nextCursor = data?.nextCursor ?? null;
 
-  const handleNextPage = () => {
-    if (data?.nextCursor) {
-      cursorsRef.current.set(effectivePage + 1, data.nextCursor);
-      setPage(effectivePage + 1);
+  const handlePrevious = () => {
+    if (page > 1) {
+      window.history.back();
     }
   };
 
-  const handlePreviousPage = () => {
-    if (effectivePage > 1) {
-      setPage(effectivePage - 1);
+  const handleNext = () => {
+    if (nextCursor) {
+      const nextPage = page + 1;
+      setPage(nextPage);
+      setCursor(nextCursor);
     }
   };
 
@@ -66,28 +61,30 @@ export function ObjectsTable({ bucketId }: ObjectsTableProps) {
   return (
     <div>
       <DataTable columns={columns} data={objects} />
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="text-muted-foreground flex-1 text-sm">
-          Page {effectivePage}
-        </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handlePreviousPage}
-            disabled={!canGoPrevious}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleNextPage}
-            disabled={!canGoNext}
-          >
-            Next
-          </Button>
-        </div>
+      <div className="flex items-center justify-between py-4">
+        <div className="text-muted-foreground text-sm">Page {page}</div>
+        <Pagination className="mx-0 w-auto justify-end">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href={page === 1 ? "#" : "?"}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handlePrevious();
+                }}
+              />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext
+                href={!hasMore ? "#" : "?"}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNext();
+                }}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </div>
   );

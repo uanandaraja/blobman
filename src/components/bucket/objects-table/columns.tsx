@@ -2,8 +2,8 @@
 
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
-import type { BucketObject } from "@/object";
 import { Button } from "@/components/ui/button";
+import type { BucketObject } from "@/object";
 
 function formatBytes(bytes: number): string {
   if (bytes === 0) return "0 B";

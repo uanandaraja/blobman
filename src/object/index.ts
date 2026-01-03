@@ -1,6 +1,6 @@
+import * as queries from "./queries";
 import * as schema from "./schema";
 import type * as types from "./types";
-import * as queries from "./queries";
 
 export namespace BucketObject {
   // Schemas
