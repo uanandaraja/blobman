@@ -3,16 +3,14 @@
 import { Plus } from "lucide-react";
 import { parseAsBoolean, useQueryState } from "nuqs";
 import { AddBucketDialog } from "@/components/bucket/add-bucket-dialog";
+import { BucketList } from "@/components/bucket/bucket-list";
 import { Button } from "@/components/ui/button";
-import { trpc } from "@/lib/trpc";
 
 export default function DashboardPage() {
   const [isAddOpen, setIsAddOpen] = useQueryState(
     "add",
     parseAsBoolean.withDefault(false),
   );
-
-  const { data: buckets, isLoading } = trpc.bucket.list.useQuery();
 
   return (
     <div>
@@ -24,30 +22,7 @@ export default function DashboardPage() {
         </Button>
       </div>
 
-      {isLoading ? (
-        <p className="text-muted-foreground">Loading...</p>
-      ) : buckets?.length === 0 ? (
-        <p className="text-muted-foreground">
-          No buckets yet. Add your first bucket to get started.
-        </p>
-      ) : (
-        <div className="grid gap-4">
-          {/* Bucket list placeholder - will be implemented later */}
-          {buckets?.map((bucket) => (
-            <div
-              key={bucket.id}
-              className="border rounded-lg p-4 flex items-center justify-between"
-            >
-              <div>
-                <h3 className="font-medium">{bucket.name}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {bucket.bucketName} · {bucket.endpoint}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      <BucketList />
 
       <AddBucketDialog open={isAddOpen} onOpenChange={setIsAddOpen} />
     </div>
