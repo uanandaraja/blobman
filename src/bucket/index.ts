@@ -1,9 +1,9 @@
+import { and, eq } from "drizzle-orm";
 import { z } from "zod";
-import { eq, and } from "drizzle-orm";
+import { decrypt, encrypt } from "@/lib/crypto";
+import { AppError } from "@/lib/error";
 import { db } from "@/server/db";
 import { bucket as bucketTable } from "@/server/db/schema";
-import { encrypt, decrypt } from "@/lib/crypto";
-import { AppError } from "@/lib/error";
 
 const OBJECTS_PER_PAGE = 10;
 
@@ -199,7 +199,8 @@ export namespace Bucket {
       // Try to list objects (max 1) to verify credentials
       await client.list({ maxKeys: 1 });
       return true;
-    } catch {
+    } catch (error) {
+      console.error("S3 connection test failed:", error);
       return false;
     }
   }
