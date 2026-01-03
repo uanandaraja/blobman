@@ -1,15 +1,9 @@
 import { getS3Client } from "@/bucket/internal";
 import type { List } from "./schema";
 import type { ListResult } from "./types";
+import { getFileType } from "./utils";
 
 const OBJECTS_PER_PAGE = 10;
-
-function getFileType(key: string): string {
-  const filename = key.split("/").pop() || key;
-  const lastDot = filename.lastIndexOf(".");
-  if (lastDot === -1 || lastDot === 0) return "—";
-  return filename.slice(lastDot + 1).toUpperCase();
-}
 
 export async function list(userId: string, input: List): Promise<ListResult> {
   const client = await getS3Client(userId, input.bucketId);
