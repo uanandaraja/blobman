@@ -1,4 +1,4 @@
-# s3-manager
+# blobman
 
 manage S3 and S3-compatible buckets
 

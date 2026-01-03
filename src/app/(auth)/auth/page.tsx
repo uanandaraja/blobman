@@ -14,7 +14,7 @@ export default function LoginPage() {
   return (
     <div className="space-y-6">
       <div className="text-center space-y-2">
-        <h1 className="text-2xl font-bold">Welcome to s3-manager</h1>
+        <h1 className="text-2xl font-bold">Welcome to blobman</h1>
         <p className="text-muted-foreground">
           Sign in to manage your S3 buckets
         </p>
