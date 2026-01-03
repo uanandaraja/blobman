@@ -20,8 +20,4 @@ export const bucketRouter = createTRPCRouter({
   testConnection: protectedProcedure
     .input(Bucket.Create)
     .mutation(({ input }) => Bucket.testConnection(input)),
-
-  listObjects: protectedProcedure
-    .input(Bucket.ListObjects)
-    .query(({ ctx, input }) => Bucket.listObjects(ctx.session.user.id, input)),
 });

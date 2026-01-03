@@ -7,18 +7,13 @@ export namespace Bucket {
   // Schemas
   export const Create = schema.Create;
   export type Create = schema.Create;
-  export const ListObjects = schema.ListObjects;
-  export type ListObjects = schema.ListObjects;
 
   // Types
   export type Info = types.Info;
-  export type ObjectInfo = types.ObjectInfo;
-  export type ListObjectsResult = types.ListObjectsResult;
 
   // Queries
   export const list = queries.list;
   export const get = queries.get;
-  export const listObjects = queries.listObjects;
 
   // Mutations
   export const create = mutations.create;

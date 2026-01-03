@@ -7,17 +7,3 @@ export type Info = {
   createdAt: Date;
   updatedAt: Date;
 };
-
-export type ObjectInfo = {
-  key: string;
-  size: number;
-  lastModified: Date;
-  etag: string;
-  type: string;
-};
-
-export type ListObjectsResult = {
-  objects: ObjectInfo[];
-  nextCursor: string | null;
-  hasMore: boolean;
-};

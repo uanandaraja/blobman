@@ -10,11 +10,3 @@ export const Create = z.object({
 });
 
 export type Create = z.infer<typeof Create>;
-
-export const ListObjects = z.object({
-  bucketId: z.string(),
-  prefix: z.string().optional(),
-  cursor: z.string().optional(),
-});
-
-export type ListObjects = z.infer<typeof ListObjects>;

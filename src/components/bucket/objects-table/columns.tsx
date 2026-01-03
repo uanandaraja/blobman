@@ -2,7 +2,7 @@
 
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
-import type { Bucket } from "@/bucket";
+import type { BucketObject } from "@/object";
 import { Button } from "@/components/ui/button";
 
 function formatBytes(bytes: number): string {
@@ -23,7 +23,7 @@ function formatDate(date: Date): string {
   }).format(date);
 }
 
-export const columns: ColumnDef<Bucket.ObjectInfo>[] = [
+export const columns: ColumnDef<BucketObject.Info>[] = [
   {
     accessorKey: "key",
     header: "Name",

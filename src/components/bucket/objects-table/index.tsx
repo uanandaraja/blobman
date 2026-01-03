@@ -27,7 +27,7 @@ export function ObjectsTable({ bucketId }: ObjectsTableProps) {
     : undefined;
   const effectivePage = hasCursorForPage ? page : 1;
 
-  const { data, isLoading, isError } = trpc.bucket.listObjects.useQuery({
+  const { data, isLoading, isError } = trpc.object.list.useQuery({
     bucketId,
     cursor: currentCursor,
   });
