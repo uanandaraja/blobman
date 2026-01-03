@@ -1,8 +1,8 @@
 import {
-  randomBytes,
+  type CipherGCMTypes,
   createCipheriv,
   createDecipheriv,
-  type CipherGCMTypes,
+  randomBytes,
 } from "node:crypto";
 
 const ALGORITHM: CipherGCMTypes = "aes-256-gcm";

@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { Bucket } from "@/bucket";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const bucketRouter = createTRPCRouter({
   list: protectedProcedure.query(({ ctx }) => Bucket.list(ctx.session.user.id)),

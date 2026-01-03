@@ -1,7 +1,7 @@
-import { redirect } from "next/navigation";
 import { headers } from "next/headers";
-import { auth } from "@/server/auth";
+import { redirect } from "next/navigation";
 import { Navbar } from "@/components/landing/navbar";
+import { auth } from "@/server/auth";
 
 export default async function AuthLayout({
   children,
