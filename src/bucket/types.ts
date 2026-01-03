@@ -13,6 +13,7 @@ export type ObjectInfo = {
   size: number;
   lastModified: Date;
   etag: string;
+  type: string;
 };
 
 export type ListObjectsResult = {

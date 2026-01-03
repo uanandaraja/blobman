@@ -9,6 +9,13 @@ import type { Info, ListObjectsResult } from "./types";
 
 const OBJECTS_PER_PAGE = 10;
 
+function getFileType(key: string): string {
+  const filename = key.split("/").pop() || key;
+  const lastDot = filename.lastIndexOf(".");
+  if (lastDot === -1 || lastDot === 0) return "—";
+  return filename.slice(lastDot + 1).toUpperCase();
+}
+
 export async function list(userId: string): Promise<Info[]> {
   const buckets = await db
     .select({
@@ -98,6 +105,7 @@ export async function listObjects(
           ? new Date(obj.lastModified)
           : new Date(),
         etag: obj.eTag ?? "",
+        type: getFileType(obj.key),
       }),
     );
 
