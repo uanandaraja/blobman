@@ -43,7 +43,6 @@ interface AddBucketFormProps {
 
 export function AddBucketForm({ onSuccess }: AddBucketFormProps) {
   const [showSecret, setShowSecret] = useState(false);
-  const [connectionVerified, setConnectionVerified] = useState(false);
   const utils = trpc.useUtils();
 
   const createBucket = trpc.bucket.create.useMutation({
@@ -56,29 +55,6 @@ export function AddBucketForm({ onSuccess }: AddBucketFormProps) {
       toast.error(error.message);
     },
   });
-
-  const testConnection = trpc.bucket.testConnection.useMutation({
-    onSuccess: (isConnected) => {
-      if (isConnected) {
-        setConnectionVerified(true);
-        toast.success("Connection successful! You can now add the bucket.");
-      } else {
-        setConnectionVerified(false);
-        toast.error("Connection failed. Check your credentials.");
-      }
-    },
-    onError: (error) => {
-      setConnectionVerified(false);
-      toast.error(error.message);
-    },
-  });
-
-  // Reset connection verification when connection-related fields change
-  const resetConnectionVerification = () => {
-    if (connectionVerified) {
-      setConnectionVerified(false);
-    }
-  };
 
   const form = useForm({
     defaultValues: {
@@ -96,21 +72,6 @@ export function AddBucketForm({ onSuccess }: AddBucketFormProps) {
       await createBucket.mutateAsync(toApiInput(value));
     },
   });
-
-  const handleTestConnection = async () => {
-    const values = form.state.values;
-    if (
-      !values.endpoint ||
-      !values.bucketName ||
-      !values.accessKeyId ||
-      !values.secretAccessKey
-    ) {
-      toast.error("Please fill in all required fields");
-      return;
-    }
-
-    await testConnection.mutateAsync(toApiInput(values));
-  };
 
   return (
     <form
@@ -155,10 +116,7 @@ export function AddBucketForm({ onSuccess }: AddBucketFormProps) {
                   id={field.name}
                   value={field.state.value}
                   onBlur={field.handleBlur}
-                  onChange={(e) => {
-                    field.handleChange(e.target.value);
-                    resetConnectionVerification();
-                  }}
+                  onChange={(e) => field.handleChange(e.target.value)}
                   placeholder="https://s3.amazonaws.com"
                   aria-invalid={isInvalid}
                 />
@@ -180,10 +138,7 @@ export function AddBucketForm({ onSuccess }: AddBucketFormProps) {
                   id={field.name}
                   value={field.state.value}
                   onBlur={field.handleBlur}
-                  onChange={(e) => {
-                    field.handleChange(e.target.value);
-                    resetConnectionVerification();
-                  }}
+                  onChange={(e) => field.handleChange(e.target.value)}
                   placeholder="us-east-1"
                   aria-invalid={isInvalid}
                 />
@@ -207,10 +162,7 @@ export function AddBucketForm({ onSuccess }: AddBucketFormProps) {
                   id={field.name}
                   value={field.state.value}
                   onBlur={field.handleBlur}
-                  onChange={(e) => {
-                    field.handleChange(e.target.value);
-                    resetConnectionVerification();
-                  }}
+                  onChange={(e) => field.handleChange(e.target.value)}
                   placeholder="my-bucket"
                   aria-invalid={isInvalid}
                 />
@@ -234,10 +186,7 @@ export function AddBucketForm({ onSuccess }: AddBucketFormProps) {
                   id={field.name}
                   value={field.state.value}
                   onBlur={field.handleBlur}
-                  onChange={(e) => {
-                    field.handleChange(e.target.value);
-                    resetConnectionVerification();
-                  }}
+                  onChange={(e) => field.handleChange(e.target.value)}
                   placeholder="AKIAIOSFODNN7EXAMPLE"
                   aria-invalid={isInvalid}
                 />
@@ -260,10 +209,7 @@ export function AddBucketForm({ onSuccess }: AddBucketFormProps) {
                     type={showSecret ? "text" : "password"}
                     value={field.state.value}
                     onBlur={field.handleBlur}
-                    onChange={(e) => {
-                      field.handleChange(e.target.value);
-                      resetConnectionVerification();
-                    }}
+                    onChange={(e) => field.handleChange(e.target.value)}
                     placeholder="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
                     aria-invalid={isInvalid}
                     className="pr-10"
@@ -291,25 +237,12 @@ export function AddBucketForm({ onSuccess }: AddBucketFormProps) {
       </FieldGroup>
 
       <div className="flex justify-end mt-6">
-        {connectionVerified ? (
-          <Button type="submit" disabled={createBucket.isPending}>
-            {createBucket.isPending && (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            )}
-            Add Bucket
-          </Button>
-        ) : (
-          <Button
-            type="button"
-            onClick={handleTestConnection}
-            disabled={testConnection.isPending}
-          >
-            {testConnection.isPending && (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            )}
-            Test Connection
-          </Button>
-        )}
+        <Button type="submit" disabled={createBucket.isPending}>
+          {createBucket.isPending && (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          )}
+          Add Bucket
+        </Button>
       </div>
     </form>
   );
